@@ -18,13 +18,13 @@ func NewAuthorService(authorDB database.Author) *AuthorService {
 	}
 }
 
-func (a *AuthorService) CreateAuthor(ctx context.Context, req *pb.CreateAuthorRequest) (*pb.AuthorResponse, error) {
+func (a *AuthorService) CreateAuthor(ctx context.Context, req *pb.CreateAuthorRequest) (*pb.Author, error) {
 	author, err := a.AuthorDB.Create(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
-	authorResponse := pb.AuthorResponse{
+	authorResponse := pb.Author{
 		Id:   author.ID,
 		Name: author.Name,
 	}
@@ -50,4 +50,18 @@ func (a *AuthorService) ListAuthors(ctx context.Context, req *pb.Blank) (*pb.Aut
 	}
 
 	return &pb.AuthorList{Authors: authorsList}, nil
+}
+
+func (a *AuthorService) GetAuthor(ctx context.Context, req *pb.GetAuthorRequest) (*pb.Author, error) {
+	author, err := a.AuthorDB.Find(req.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	authorResponse := pb.Author{
+		Id:   author.ID,
+		Name: author.Name,
+	}
+
+	return &authorResponse, nil
 }

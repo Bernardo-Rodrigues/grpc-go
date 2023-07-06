@@ -22,8 +22,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthorServiceClient interface {
-	CreateAuthor(ctx context.Context, in *CreateAuthorRequest, opts ...grpc.CallOption) (*AuthorResponse, error)
+	CreateAuthor(ctx context.Context, in *CreateAuthorRequest, opts ...grpc.CallOption) (*Author, error)
 	ListAuthors(ctx context.Context, in *Blank, opts ...grpc.CallOption) (*AuthorList, error)
+	GetAuthor(ctx context.Context, in *GetAuthorRequest, opts ...grpc.CallOption) (*Author, error)
 }
 
 type authorServiceClient struct {
@@ -34,8 +35,8 @@ func NewAuthorServiceClient(cc grpc.ClientConnInterface) AuthorServiceClient {
 	return &authorServiceClient{cc}
 }
 
-func (c *authorServiceClient) CreateAuthor(ctx context.Context, in *CreateAuthorRequest, opts ...grpc.CallOption) (*AuthorResponse, error) {
-	out := new(AuthorResponse)
+func (c *authorServiceClient) CreateAuthor(ctx context.Context, in *CreateAuthorRequest, opts ...grpc.CallOption) (*Author, error) {
+	out := new(Author)
 	err := c.cc.Invoke(ctx, "/pb.AuthorService/CreateAuthor", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -52,12 +53,22 @@ func (c *authorServiceClient) ListAuthors(ctx context.Context, in *Blank, opts .
 	return out, nil
 }
 
+func (c *authorServiceClient) GetAuthor(ctx context.Context, in *GetAuthorRequest, opts ...grpc.CallOption) (*Author, error) {
+	out := new(Author)
+	err := c.cc.Invoke(ctx, "/pb.AuthorService/GetAuthor", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthorServiceServer is the server API for AuthorService service.
 // All implementations must embed UnimplementedAuthorServiceServer
 // for forward compatibility
 type AuthorServiceServer interface {
-	CreateAuthor(context.Context, *CreateAuthorRequest) (*AuthorResponse, error)
+	CreateAuthor(context.Context, *CreateAuthorRequest) (*Author, error)
 	ListAuthors(context.Context, *Blank) (*AuthorList, error)
+	GetAuthor(context.Context, *GetAuthorRequest) (*Author, error)
 	mustEmbedUnimplementedAuthorServiceServer()
 }
 
@@ -65,11 +76,14 @@ type AuthorServiceServer interface {
 type UnimplementedAuthorServiceServer struct {
 }
 
-func (UnimplementedAuthorServiceServer) CreateAuthor(context.Context, *CreateAuthorRequest) (*AuthorResponse, error) {
+func (UnimplementedAuthorServiceServer) CreateAuthor(context.Context, *CreateAuthorRequest) (*Author, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateAuthor not implemented")
 }
 func (UnimplementedAuthorServiceServer) ListAuthors(context.Context, *Blank) (*AuthorList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListAuthors not implemented")
+}
+func (UnimplementedAuthorServiceServer) GetAuthor(context.Context, *GetAuthorRequest) (*Author, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAuthor not implemented")
 }
 func (UnimplementedAuthorServiceServer) mustEmbedUnimplementedAuthorServiceServer() {}
 
@@ -120,6 +134,24 @@ func _AuthorService_ListAuthors_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthorService_GetAuthor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAuthorRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthorServiceServer).GetAuthor(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.AuthorService/GetAuthor",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthorServiceServer).GetAuthor(ctx, req.(*GetAuthorRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthorService_ServiceDesc is the grpc.ServiceDesc for AuthorService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +166,10 @@ var AuthorService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListAuthors",
 			Handler:    _AuthorService_ListAuthors_Handler,
+		},
+		{
+			MethodName: "GetAuthor",
+			Handler:    _AuthorService_GetAuthor_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

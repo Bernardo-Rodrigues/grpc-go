@@ -13,9 +13,8 @@ message CreateAuthorRequest {
     string name = 1;
 }
 
-message AuthorResponse {
+message GetAuthorRequest {
     string id = 1;
-    string name = 2;
 }
 
 message AuthorList {
@@ -23,6 +22,7 @@ message AuthorList {
 }
 
 service AuthorService {
-    rpc CreateAuthor(CreateAuthorRequest) returns (AuthorResponse) {}
+    rpc CreateAuthor(CreateAuthorRequest) returns (Author) {}
     rpc ListAuthors(Blank) returns (AuthorList) {}
+    rpc GetAuthor(GetAuthorRequest) returns (Author) {}
 }
