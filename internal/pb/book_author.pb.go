@@ -20,6 +20,44 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type Blank struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *Blank) Reset() {
+	*x = Blank{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_book_author_proto_msgTypes[0]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Blank) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Blank) ProtoMessage() {}
+
+func (x *Blank) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_book_author_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Blank.ProtoReflect.Descriptor instead.
+func (*Blank) Descriptor() ([]byte, []int) {
+	return file_proto_book_author_proto_rawDescGZIP(), []int{0}
+}
+
 type Author struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -32,7 +70,7 @@ type Author struct {
 func (x *Author) Reset() {
 	*x = Author{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_book_author_proto_msgTypes[0]
+		mi := &file_proto_book_author_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -45,7 +83,7 @@ func (x *Author) String() string {
 func (*Author) ProtoMessage() {}
 
 func (x *Author) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_book_author_proto_msgTypes[0]
+	mi := &file_proto_book_author_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +96,7 @@ func (x *Author) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Author.ProtoReflect.Descriptor instead.
 func (*Author) Descriptor() ([]byte, []int) {
-	return file_proto_book_author_proto_rawDescGZIP(), []int{0}
+	return file_proto_book_author_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Author) GetId() string {
@@ -86,7 +124,7 @@ type CreateAuthorRequest struct {
 func (x *CreateAuthorRequest) Reset() {
 	*x = CreateAuthorRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_book_author_proto_msgTypes[1]
+		mi := &file_proto_book_author_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -99,7 +137,7 @@ func (x *CreateAuthorRequest) String() string {
 func (*CreateAuthorRequest) ProtoMessage() {}
 
 func (x *CreateAuthorRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_book_author_proto_msgTypes[1]
+	mi := &file_proto_book_author_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -112,7 +150,7 @@ func (x *CreateAuthorRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateAuthorRequest.ProtoReflect.Descriptor instead.
 func (*CreateAuthorRequest) Descriptor() ([]byte, []int) {
-	return file_proto_book_author_proto_rawDescGZIP(), []int{1}
+	return file_proto_book_author_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *CreateAuthorRequest) GetName() string {
@@ -134,7 +172,7 @@ type AuthorResponse struct {
 func (x *AuthorResponse) Reset() {
 	*x = AuthorResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_book_author_proto_msgTypes[2]
+		mi := &file_proto_book_author_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -147,7 +185,7 @@ func (x *AuthorResponse) String() string {
 func (*AuthorResponse) ProtoMessage() {}
 
 func (x *AuthorResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_book_author_proto_msgTypes[2]
+	mi := &file_proto_book_author_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -160,7 +198,7 @@ func (x *AuthorResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthorResponse.ProtoReflect.Descriptor instead.
 func (*AuthorResponse) Descriptor() ([]byte, []int) {
-	return file_proto_book_author_proto_rawDescGZIP(), []int{2}
+	return file_proto_book_author_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *AuthorResponse) GetId() string {
@@ -177,27 +215,80 @@ func (x *AuthorResponse) GetName() string {
 	return ""
 }
 
+type AuthorList struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Authors []*Author `protobuf:"bytes,1,rep,name=authors,proto3" json:"authors,omitempty"`
+}
+
+func (x *AuthorList) Reset() {
+	*x = AuthorList{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_book_author_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *AuthorList) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AuthorList) ProtoMessage() {}
+
+func (x *AuthorList) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_book_author_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AuthorList.ProtoReflect.Descriptor instead.
+func (*AuthorList) Descriptor() ([]byte, []int) {
+	return file_proto_book_author_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *AuthorList) GetAuthors() []*Author {
+	if x != nil {
+		return x.Authors
+	}
+	return nil
+}
+
 var File_proto_book_author_proto protoreflect.FileDescriptor
 
 var file_proto_book_author_proto_rawDesc = []byte{
 	0x0a, 0x17, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x62, 0x6f, 0x6f, 0x6b, 0x5f, 0x61, 0x75, 0x74,
-	0x68, 0x6f, 0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x02, 0x70, 0x62, 0x22, 0x2c, 0x0a,
-	0x06, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18,
-	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x29, 0x0a, 0x13, 0x43,
-	0x72, 0x65, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x34, 0x0a, 0x0e, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x32, 0x4e, 0x0a, 0x0d,
-	0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x3d, 0x0a,
-	0x0c, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x12, 0x17, 0x2e,
-	0x70, 0x62, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x12, 0x2e, 0x70, 0x62, 0x2e, 0x41, 0x75, 0x74, 0x68,
-	0x6f, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x0d, 0x5a, 0x0b,
-	0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x68, 0x6f, 0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x02, 0x70, 0x62, 0x22, 0x07, 0x0a,
+	0x05, 0x42, 0x6c, 0x61, 0x6e, 0x6b, 0x22, 0x2c, 0x0a, 0x06, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72,
+	0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64,
+	0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
+	0x6e, 0x61, 0x6d, 0x65, 0x22, 0x29, 0x0a, 0x13, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x41, 0x75,
+	0x74, 0x68, 0x6f, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x6e,
+	0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22,
+	0x34, 0x0a, 0x0e, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69,
+	0x64, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x32, 0x0a, 0x0a, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x4c,
+	0x69, 0x73, 0x74, 0x12, 0x24, 0x0a, 0x07, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x73, 0x18, 0x01,
+	0x20, 0x03, 0x28, 0x0b, 0x32, 0x0a, 0x2e, 0x70, 0x62, 0x2e, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72,
+	0x52, 0x07, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x73, 0x32, 0x7a, 0x0a, 0x0d, 0x41, 0x75, 0x74,
+	0x68, 0x6f, 0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x3d, 0x0a, 0x0c, 0x43, 0x72,
+	0x65, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x12, 0x17, 0x2e, 0x70, 0x62, 0x2e,
+	0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x1a, 0x12, 0x2e, 0x70, 0x62, 0x2e, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x2a, 0x0a, 0x0b, 0x4c, 0x69, 0x73,
+	0x74, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x73, 0x12, 0x09, 0x2e, 0x70, 0x62, 0x2e, 0x42, 0x6c,
+	0x61, 0x6e, 0x6b, 0x1a, 0x0e, 0x2e, 0x70, 0x62, 0x2e, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x4c,
+	0x69, 0x73, 0x74, 0x22, 0x00, 0x42, 0x0d, 0x5a, 0x0b, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61,
+	0x6c, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -212,20 +303,25 @@ func file_proto_book_author_proto_rawDescGZIP() []byte {
 	return file_proto_book_author_proto_rawDescData
 }
 
-var file_proto_book_author_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_proto_book_author_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_proto_book_author_proto_goTypes = []interface{}{
-	(*Author)(nil),              // 0: pb.Author
-	(*CreateAuthorRequest)(nil), // 1: pb.CreateAuthorRequest
-	(*AuthorResponse)(nil),      // 2: pb.AuthorResponse
+	(*Blank)(nil),               // 0: pb.Blank
+	(*Author)(nil),              // 1: pb.Author
+	(*CreateAuthorRequest)(nil), // 2: pb.CreateAuthorRequest
+	(*AuthorResponse)(nil),      // 3: pb.AuthorResponse
+	(*AuthorList)(nil),          // 4: pb.AuthorList
 }
 var file_proto_book_author_proto_depIdxs = []int32{
-	1, // 0: pb.AuthorService.CreateAuthor:input_type -> pb.CreateAuthorRequest
-	2, // 1: pb.AuthorService.CreateAuthor:output_type -> pb.AuthorResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: pb.AuthorList.authors:type_name -> pb.Author
+	2, // 1: pb.AuthorService.CreateAuthor:input_type -> pb.CreateAuthorRequest
+	0, // 2: pb.AuthorService.ListAuthors:input_type -> pb.Blank
+	3, // 3: pb.AuthorService.CreateAuthor:output_type -> pb.AuthorResponse
+	4, // 4: pb.AuthorService.ListAuthors:output_type -> pb.AuthorList
+	3, // [3:5] is the sub-list for method output_type
+	1, // [1:3] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_proto_book_author_proto_init() }
@@ -235,7 +331,7 @@ func file_proto_book_author_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_proto_book_author_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Author); i {
+			switch v := v.(*Blank); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -247,7 +343,7 @@ func file_proto_book_author_proto_init() {
 			}
 		}
 		file_proto_book_author_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateAuthorRequest); i {
+			switch v := v.(*Author); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -259,7 +355,31 @@ func file_proto_book_author_proto_init() {
 			}
 		}
 		file_proto_book_author_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateAuthorRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_book_author_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*AuthorResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_book_author_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*AuthorList); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -277,7 +397,7 @@ func file_proto_book_author_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_proto_book_author_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthorServiceClient interface {
 	CreateAuthor(ctx context.Context, in *CreateAuthorRequest, opts ...grpc.CallOption) (*AuthorResponse, error)
+	ListAuthors(ctx context.Context, in *Blank, opts ...grpc.CallOption) (*AuthorList, error)
 }
 
 type authorServiceClient struct {
@@ -42,11 +43,21 @@ func (c *authorServiceClient) CreateAuthor(ctx context.Context, in *CreateAuthor
 	return out, nil
 }
 
+func (c *authorServiceClient) ListAuthors(ctx context.Context, in *Blank, opts ...grpc.CallOption) (*AuthorList, error) {
+	out := new(AuthorList)
+	err := c.cc.Invoke(ctx, "/pb.AuthorService/ListAuthors", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthorServiceServer is the server API for AuthorService service.
 // All implementations must embed UnimplementedAuthorServiceServer
 // for forward compatibility
 type AuthorServiceServer interface {
 	CreateAuthor(context.Context, *CreateAuthorRequest) (*AuthorResponse, error)
+	ListAuthors(context.Context, *Blank) (*AuthorList, error)
 	mustEmbedUnimplementedAuthorServiceServer()
 }
 
@@ -56,6 +67,9 @@ type UnimplementedAuthorServiceServer struct {
 
 func (UnimplementedAuthorServiceServer) CreateAuthor(context.Context, *CreateAuthorRequest) (*AuthorResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateAuthor not implemented")
+}
+func (UnimplementedAuthorServiceServer) ListAuthors(context.Context, *Blank) (*AuthorList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAuthors not implemented")
 }
 func (UnimplementedAuthorServiceServer) mustEmbedUnimplementedAuthorServiceServer() {}
 
@@ -88,6 +102,24 @@ func _AuthorService_CreateAuthor_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthorService_ListAuthors_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Blank)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthorServiceServer).ListAuthors(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.AuthorService/ListAuthors",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthorServiceServer).ListAuthors(ctx, req.(*Blank))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthorService_ServiceDesc is the grpc.ServiceDesc for AuthorService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +130,10 @@ var AuthorService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateAuthor",
 			Handler:    _AuthorService_CreateAuthor_Handler,
+		},
+		{
+			MethodName: "ListAuthors",
+			Handler:    _AuthorService_ListAuthors_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
