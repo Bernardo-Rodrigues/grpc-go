@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type AuthorServiceClient interface {
 	CreateAuthor(ctx context.Context, in *CreateAuthorRequest, opts ...grpc.CallOption) (*Author, error)
 	CreateAuthorStream(ctx context.Context, opts ...grpc.CallOption) (AuthorService_CreateAuthorStreamClient, error)
+	CreateAuthorStreamBidirectional(ctx context.Context, opts ...grpc.CallOption) (AuthorService_CreateAuthorStreamBidirectionalClient, error)
 	ListAuthors(ctx context.Context, in *Blank, opts ...grpc.CallOption) (*AuthorList, error)
 	GetAuthor(ctx context.Context, in *GetAuthorRequest, opts ...grpc.CallOption) (*Author, error)
 }
@@ -79,6 +80,37 @@ func (x *authorServiceCreateAuthorStreamClient) CloseAndRecv() (*AuthorList, err
 	return m, nil
 }
 
+func (c *authorServiceClient) CreateAuthorStreamBidirectional(ctx context.Context, opts ...grpc.CallOption) (AuthorService_CreateAuthorStreamBidirectionalClient, error) {
+	stream, err := c.cc.NewStream(ctx, &AuthorService_ServiceDesc.Streams[1], "/pb.AuthorService/CreateAuthorStreamBidirectional", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &authorServiceCreateAuthorStreamBidirectionalClient{stream}
+	return x, nil
+}
+
+type AuthorService_CreateAuthorStreamBidirectionalClient interface {
+	Send(*CreateAuthorRequest) error
+	Recv() (*Author, error)
+	grpc.ClientStream
+}
+
+type authorServiceCreateAuthorStreamBidirectionalClient struct {
+	grpc.ClientStream
+}
+
+func (x *authorServiceCreateAuthorStreamBidirectionalClient) Send(m *CreateAuthorRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *authorServiceCreateAuthorStreamBidirectionalClient) Recv() (*Author, error) {
+	m := new(Author)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func (c *authorServiceClient) ListAuthors(ctx context.Context, in *Blank, opts ...grpc.CallOption) (*AuthorList, error) {
 	out := new(AuthorList)
 	err := c.cc.Invoke(ctx, "/pb.AuthorService/ListAuthors", in, out, opts...)
@@ -103,6 +135,7 @@ func (c *authorServiceClient) GetAuthor(ctx context.Context, in *GetAuthorReques
 type AuthorServiceServer interface {
 	CreateAuthor(context.Context, *CreateAuthorRequest) (*Author, error)
 	CreateAuthorStream(AuthorService_CreateAuthorStreamServer) error
+	CreateAuthorStreamBidirectional(AuthorService_CreateAuthorStreamBidirectionalServer) error
 	ListAuthors(context.Context, *Blank) (*AuthorList, error)
 	GetAuthor(context.Context, *GetAuthorRequest) (*Author, error)
 	mustEmbedUnimplementedAuthorServiceServer()
@@ -117,6 +150,9 @@ func (UnimplementedAuthorServiceServer) CreateAuthor(context.Context, *CreateAut
 }
 func (UnimplementedAuthorServiceServer) CreateAuthorStream(AuthorService_CreateAuthorStreamServer) error {
 	return status.Errorf(codes.Unimplemented, "method CreateAuthorStream not implemented")
+}
+func (UnimplementedAuthorServiceServer) CreateAuthorStreamBidirectional(AuthorService_CreateAuthorStreamBidirectionalServer) error {
+	return status.Errorf(codes.Unimplemented, "method CreateAuthorStreamBidirectional not implemented")
 }
 func (UnimplementedAuthorServiceServer) ListAuthors(context.Context, *Blank) (*AuthorList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListAuthors not implemented")
@@ -174,6 +210,32 @@ func (x *authorServiceCreateAuthorStreamServer) SendAndClose(m *AuthorList) erro
 }
 
 func (x *authorServiceCreateAuthorStreamServer) Recv() (*CreateAuthorRequest, error) {
+	m := new(CreateAuthorRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func _AuthorService_CreateAuthorStreamBidirectional_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(AuthorServiceServer).CreateAuthorStreamBidirectional(&authorServiceCreateAuthorStreamBidirectionalServer{stream})
+}
+
+type AuthorService_CreateAuthorStreamBidirectionalServer interface {
+	Send(*Author) error
+	Recv() (*CreateAuthorRequest, error)
+	grpc.ServerStream
+}
+
+type authorServiceCreateAuthorStreamBidirectionalServer struct {
+	grpc.ServerStream
+}
+
+func (x *authorServiceCreateAuthorStreamBidirectionalServer) Send(m *Author) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *authorServiceCreateAuthorStreamBidirectionalServer) Recv() (*CreateAuthorRequest, error) {
 	m := new(CreateAuthorRequest)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -241,6 +303,12 @@ var AuthorService_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "CreateAuthorStream",
 			Handler:       _AuthorService_CreateAuthorStream_Handler,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "CreateAuthorStreamBidirectional",
+			Handler:       _AuthorService_CreateAuthorStreamBidirectional_Handler,
+			ServerStreams: true,
 			ClientStreams: true,
 		},
 	},

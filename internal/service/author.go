@@ -57,6 +57,32 @@ func (a *AuthorService) CreateAuthorStream(stream pb.AuthorService_CreateAuthorS
 	}
 }
 
+func (a *AuthorService) CreateAuthorStreamBidirectional(stream pb.AuthorService_CreateAuthorStreamBidirectionalServer) error {
+	for {
+		authorRequest, err := stream.Recv()
+		if err == io.EOF {
+			return nil
+		}
+		if err != nil {
+			return err
+		}
+
+		author, err := a.AuthorDB.Create(authorRequest.Name)
+		if err != nil {
+			return err
+		}
+
+		err = stream.Send(&pb.Author{
+			Id:   author.ID,
+			Name: author.Name,
+		})
+
+		if err != nil {
+			return err
+		}
+	}
+}
+
 func (a *AuthorService) ListAuthors(ctx context.Context, req *pb.Blank) (*pb.AuthorList, error) {
 	authors, err := a.AuthorDB.FindAll()
 	if err != nil {
