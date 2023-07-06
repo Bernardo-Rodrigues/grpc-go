@@ -1,0 +1,21 @@
+syntax = "proto3";
+package pb;
+option go_package = "internal/pb";
+
+message Author {
+    string id = 1;
+    string name = 2;
+}
+
+message CreateAuthorRequest {
+    string name = 1;
+}
+
+message AuthorResponse {
+    string id = 1;
+    string name = 2;
+}
+
+service AuthorService {
+    rpc CreateAuthor(CreateAuthorRequest) returns (AuthorResponse) {}
+}
