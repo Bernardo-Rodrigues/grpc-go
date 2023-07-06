@@ -314,3 +314,300 @@ var AuthorService_ServiceDesc = grpc.ServiceDesc{
 	},
 	Metadata: "proto/book_author.proto",
 }
+
+// BookServiceClient is the client API for BookService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type BookServiceClient interface {
+	CreateBook(ctx context.Context, in *CreateBookRequest, opts ...grpc.CallOption) (*Book, error)
+	CreateBookStream(ctx context.Context, opts ...grpc.CallOption) (BookService_CreateBookStreamClient, error)
+	CreateBookStreamBidirectional(ctx context.Context, opts ...grpc.CallOption) (BookService_CreateBookStreamBidirectionalClient, error)
+	ListBooks(ctx context.Context, in *Blank, opts ...grpc.CallOption) (*BookList, error)
+	GetBook(ctx context.Context, in *GetBookRequest, opts ...grpc.CallOption) (*Book, error)
+}
+
+type bookServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewBookServiceClient(cc grpc.ClientConnInterface) BookServiceClient {
+	return &bookServiceClient{cc}
+}
+
+func (c *bookServiceClient) CreateBook(ctx context.Context, in *CreateBookRequest, opts ...grpc.CallOption) (*Book, error) {
+	out := new(Book)
+	err := c.cc.Invoke(ctx, "/pb.BookService/CreateBook", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookServiceClient) CreateBookStream(ctx context.Context, opts ...grpc.CallOption) (BookService_CreateBookStreamClient, error) {
+	stream, err := c.cc.NewStream(ctx, &BookService_ServiceDesc.Streams[0], "/pb.BookService/CreateBookStream", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &bookServiceCreateBookStreamClient{stream}
+	return x, nil
+}
+
+type BookService_CreateBookStreamClient interface {
+	Send(*CreateBookRequest) error
+	CloseAndRecv() (*BookList, error)
+	grpc.ClientStream
+}
+
+type bookServiceCreateBookStreamClient struct {
+	grpc.ClientStream
+}
+
+func (x *bookServiceCreateBookStreamClient) Send(m *CreateBookRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *bookServiceCreateBookStreamClient) CloseAndRecv() (*BookList, error) {
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	m := new(BookList)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *bookServiceClient) CreateBookStreamBidirectional(ctx context.Context, opts ...grpc.CallOption) (BookService_CreateBookStreamBidirectionalClient, error) {
+	stream, err := c.cc.NewStream(ctx, &BookService_ServiceDesc.Streams[1], "/pb.BookService/CreateBookStreamBidirectional", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &bookServiceCreateBookStreamBidirectionalClient{stream}
+	return x, nil
+}
+
+type BookService_CreateBookStreamBidirectionalClient interface {
+	Send(*CreateBookRequest) error
+	Recv() (*Book, error)
+	grpc.ClientStream
+}
+
+type bookServiceCreateBookStreamBidirectionalClient struct {
+	grpc.ClientStream
+}
+
+func (x *bookServiceCreateBookStreamBidirectionalClient) Send(m *CreateBookRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *bookServiceCreateBookStreamBidirectionalClient) Recv() (*Book, error) {
+	m := new(Book)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *bookServiceClient) ListBooks(ctx context.Context, in *Blank, opts ...grpc.CallOption) (*BookList, error) {
+	out := new(BookList)
+	err := c.cc.Invoke(ctx, "/pb.BookService/ListBooks", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookServiceClient) GetBook(ctx context.Context, in *GetBookRequest, opts ...grpc.CallOption) (*Book, error) {
+	out := new(Book)
+	err := c.cc.Invoke(ctx, "/pb.BookService/GetBook", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// BookServiceServer is the server API for BookService service.
+// All implementations must embed UnimplementedBookServiceServer
+// for forward compatibility
+type BookServiceServer interface {
+	CreateBook(context.Context, *CreateBookRequest) (*Book, error)
+	CreateBookStream(BookService_CreateBookStreamServer) error
+	CreateBookStreamBidirectional(BookService_CreateBookStreamBidirectionalServer) error
+	ListBooks(context.Context, *Blank) (*BookList, error)
+	GetBook(context.Context, *GetBookRequest) (*Book, error)
+	mustEmbedUnimplementedBookServiceServer()
+}
+
+// UnimplementedBookServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedBookServiceServer struct {
+}
+
+func (UnimplementedBookServiceServer) CreateBook(context.Context, *CreateBookRequest) (*Book, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateBook not implemented")
+}
+func (UnimplementedBookServiceServer) CreateBookStream(BookService_CreateBookStreamServer) error {
+	return status.Errorf(codes.Unimplemented, "method CreateBookStream not implemented")
+}
+func (UnimplementedBookServiceServer) CreateBookStreamBidirectional(BookService_CreateBookStreamBidirectionalServer) error {
+	return status.Errorf(codes.Unimplemented, "method CreateBookStreamBidirectional not implemented")
+}
+func (UnimplementedBookServiceServer) ListBooks(context.Context, *Blank) (*BookList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListBooks not implemented")
+}
+func (UnimplementedBookServiceServer) GetBook(context.Context, *GetBookRequest) (*Book, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBook not implemented")
+}
+func (UnimplementedBookServiceServer) mustEmbedUnimplementedBookServiceServer() {}
+
+// UnsafeBookServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to BookServiceServer will
+// result in compilation errors.
+type UnsafeBookServiceServer interface {
+	mustEmbedUnimplementedBookServiceServer()
+}
+
+func RegisterBookServiceServer(s grpc.ServiceRegistrar, srv BookServiceServer) {
+	s.RegisterService(&BookService_ServiceDesc, srv)
+}
+
+func _BookService_CreateBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateBookRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookServiceServer).CreateBook(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.BookService/CreateBook",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookServiceServer).CreateBook(ctx, req.(*CreateBookRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BookService_CreateBookStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(BookServiceServer).CreateBookStream(&bookServiceCreateBookStreamServer{stream})
+}
+
+type BookService_CreateBookStreamServer interface {
+	SendAndClose(*BookList) error
+	Recv() (*CreateBookRequest, error)
+	grpc.ServerStream
+}
+
+type bookServiceCreateBookStreamServer struct {
+	grpc.ServerStream
+}
+
+func (x *bookServiceCreateBookStreamServer) SendAndClose(m *BookList) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *bookServiceCreateBookStreamServer) Recv() (*CreateBookRequest, error) {
+	m := new(CreateBookRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func _BookService_CreateBookStreamBidirectional_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(BookServiceServer).CreateBookStreamBidirectional(&bookServiceCreateBookStreamBidirectionalServer{stream})
+}
+
+type BookService_CreateBookStreamBidirectionalServer interface {
+	Send(*Book) error
+	Recv() (*CreateBookRequest, error)
+	grpc.ServerStream
+}
+
+type bookServiceCreateBookStreamBidirectionalServer struct {
+	grpc.ServerStream
+}
+
+func (x *bookServiceCreateBookStreamBidirectionalServer) Send(m *Book) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *bookServiceCreateBookStreamBidirectionalServer) Recv() (*CreateBookRequest, error) {
+	m := new(CreateBookRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func _BookService_ListBooks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Blank)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookServiceServer).ListBooks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.BookService/ListBooks",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookServiceServer).ListBooks(ctx, req.(*Blank))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BookService_GetBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBookRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookServiceServer).GetBook(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.BookService/GetBook",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookServiceServer).GetBook(ctx, req.(*GetBookRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// BookService_ServiceDesc is the grpc.ServiceDesc for BookService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var BookService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "pb.BookService",
+	HandlerType: (*BookServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateBook",
+			Handler:    _BookService_CreateBook_Handler,
+		},
+		{
+			MethodName: "ListBooks",
+			Handler:    _BookService_ListBooks_Handler,
+		},
+		{
+			MethodName: "GetBook",
+			Handler:    _BookService_GetBook_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "CreateBookStream",
+			Handler:       _BookService_CreateBookStream_Handler,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "CreateBookStreamBidirectional",
+			Handler:       _BookService_CreateBookStreamBidirectional_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+	},
+	Metadata: "proto/book_author.proto",
+}

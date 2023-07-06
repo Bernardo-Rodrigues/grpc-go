@@ -21,10 +21,39 @@ message AuthorList {
     repeated Author authors = 1;
 }
 
+message Book {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    string authorId = 4;
+}
+
+message CreateBookRequest {
+    string name = 1;
+    string description = 2;
+    string authorId = 3;
+}
+
+message GetBookRequest {
+    string id = 1;
+}
+
+message BookList {
+    repeated Book books = 1;
+}
+
 service AuthorService {
     rpc CreateAuthor(CreateAuthorRequest) returns (Author) {}
     rpc CreateAuthorStream(stream CreateAuthorRequest) returns (AuthorList) {}
     rpc CreateAuthorStreamBidirectional(stream CreateAuthorRequest) returns (stream Author) {}
     rpc ListAuthors(Blank) returns (AuthorList) {}
     rpc GetAuthor(GetAuthorRequest) returns (Author) {}
+}
+
+service BookService {
+    rpc CreateBook(CreateBookRequest) returns (Book) {}
+    rpc CreateBookStream(stream CreateBookRequest) returns (BookList) {}
+    rpc CreateBookStreamBidirectional(stream CreateBookRequest) returns (stream Book) {}
+    rpc ListBooks(Blank) returns (BookList) {}
+    rpc GetBook(GetBookRequest) returns (Book) {}
 }

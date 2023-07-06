@@ -22,9 +22,12 @@ func main() {
 
 	authorDb := database.NewAuthor(db)
 	authorService := service.NewAuthorService(*authorDb)
+	bookDb := database.NewBook(db)
+	bookService := service.NewBookService(*bookDb)
 
 	grpcServer := grpc.NewServer()
 	pb.RegisterAuthorServiceServer(grpcServer, authorService)
+	pb.RegisterBookServiceServer(grpcServer, bookService)
 	reflection.Register(grpcServer)
 
 	lis, err := net.Listen("tcp", ":50051")
