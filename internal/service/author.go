@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"io"
 
 	"github.com/Bernardo-Rodrigues/grpc-go/internal/database"
 	"github.com/Bernardo-Rodrigues/grpc-go/internal/pb"
@@ -30,6 +31,30 @@ func (a *AuthorService) CreateAuthor(ctx context.Context, req *pb.CreateAuthorRe
 	}
 
 	return &authorResponse, nil
+}
+
+func (a *AuthorService) CreateAuthorStream(stream pb.AuthorService_CreateAuthorStreamServer) error {
+	authors := &pb.AuthorList{}
+
+	for {
+		authorRequest, err := stream.Recv()
+		if err == io.EOF {
+			return stream.SendAndClose(authors)
+		}
+		if err != nil {
+			return err
+		}
+
+		author, err := a.AuthorDB.Create(authorRequest.Name)
+		if err != nil {
+			return err
+		}
+
+		authors.Authors = append(authors.Authors, &pb.Author{
+			Id:   author.ID,
+			Name: author.Name,
+		})
+	}
 }
 
 func (a *AuthorService) ListAuthors(ctx context.Context, req *pb.Blank) (*pb.AuthorList, error) {
